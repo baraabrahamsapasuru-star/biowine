@@ -10,32 +10,15 @@
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: #e2e8f0; line-height: 1.8; margin: 0; }
         .container { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
         .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-weight: 600; }
-        
-        .content-header img { 
-            width: 100%; height: 350px; object-fit: cover; 
-            border-radius: 30px; margin-bottom: 30px; border: 2px solid var(--accent);
-        }
+        .content-header img { width: 100%; height: 350px; object-fit: cover; border-radius: 30px; margin-bottom: 30px; border: 2px solid var(--accent); }
         h1 { color: var(--accent); font-size: 36px; margin-bottom: 20px; }
-        .text-block { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; margin-bottom: 30px;}
+        .text-block { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; }
 
         /* CSS TERMOMETER */
-        .temp-container {
-            background: #1e293b; padding: 30px; border-radius: 20px;
-            text-align: center; border: 1px solid var(--accent); margin-top: 40px;
-        }
-        .thermometer-wrapper {
-            display: flex; align-items: center; justify-content: center;
-            gap: 50px; margin: 50px 0; height: 200px;
-        }
-        .thermometer-input {
-            -webkit-appearance: none; width: 200px; height: 12px;
-            background: linear-gradient(to right, #3b82f6, #22c55e, #ef4444);
-            border-radius: 10px; outline: none; transform: rotate(-90deg);
-        }
-        .thermometer-input::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 25px; height: 25px;
-            background: white; border: 3px solid var(--primary); border-radius: 50%; cursor: pointer;
-        }
+        .temp-container { background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--accent); margin-top: 40px; }
+        .thermometer-wrapper { display: flex; align-items: center; justify-content: center; gap: 50px; margin: 50px 0; height: 200px; }
+        .thermometer-input { -webkit-appearance: none; width: 200px; height: 12px; background: linear-gradient(to right, #3b82f6, #22c55e, #ef4444); border-radius: 10px; outline: none; transform: rotate(-90deg); }
+        .thermometer-input::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: white; border: 3px solid var(--primary); border-radius: 50%; cursor: pointer; }
         .temp-display { font-size: 48px; font-weight: 700; color: var(--accent); }
         .status-box { padding: 10px 20px; border-radius: 10px; font-weight: 600; margin-top: 10px; }
         .status-cold { background: #1e3a8a; color: #60a5fa; }
@@ -46,13 +29,12 @@
 <body>
 
 <div class="container">
-    <a href="index.html" class="back-link">← Kembali ke Dashboard</a>
+    <a href="index.html" class="back-link">← Kembali</a>
     <div id="content"><h1>Memuat...</h1></div>
     
     <div id="simulator" style="display: none;">
         <div class="temp-container">
-            <h3>Simulasi Termometer Fermentasi</h3>
-            <p>Geser untuk melihat pengaruh suhu terhadap ragi wine</p>
+            <h3>Simulasi Suhu Fermentasi</h3>
             <div class="thermometer-wrapper">
                 <input type="range" min="5" max="50" value="25" class="thermometer-input" id="tempSlider">
                 <div>
@@ -60,35 +42,17 @@
                     <div id="tempStatus" class="status-box status-optimal">Suhu Optimal</div>
                 </div>
             </div>
-            <p id="tempAdvice">Kondisi sempurna! Ragi mengubah gula menjadi alkohol secara stabil.</p>
+            <p id="tempAdvice">Suhu ideal untuk ragi Saccharomyces cerevisiae bekerja.</p>
         </div>
     </div>
-
-    <footer style="text-align: center; padding: 40px; color: #64748b;">&copy; 2026 BioWine Education</footer>
 </div>
 
 <script>
     const dataMateri = [
-        {
-            title: "Dasar Bioteknologi",
-            image: "definisi.jpeg",
-            desc: "Bioteknologi adalah pemanfaatan makhluk hidup untuk menghasilkan produk. Wine menggunakan bioteknologi konvensional lewat proses fermentasi ragi."
-        },
-        {
-            title: "Reaksi Kimia Fermentasi",
-            image: "chemical.jpeg",
-            desc: "Fermentasi adalah proses anaerob dimana gula diubah menjadi energi, ethanol, dan CO2. Rumus: <br><br><b>C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂</b><br><br>Gunakan simulator di bawah untuk memahami pentingnya kontrol suhu!"
-        },
-        {
-            title: "The Master: Ragi",
-            image: "ragi.jpeg",
-            desc: "Saccharomyces cerevisiae adalah jenis ragi utama. Mereka tahan terhadap kadar alkohol tinggi dan memberikan aroma khas pada anggur."
-        },
-        {
-            title: "Tahapan Produksi",
-            image: "production.jpeg",
-            desc: "Meliputi Harvesting (Panen), Crushing (Penghancuran), Fermentation (Fermentasi), Aging (Pematangan), dan Bottling (Pembotolan)."
-        }
+        { title: "Dasar Bioteknologi", image: "wine.jpeg", desc: "Bioteknologi adalah pemanfaatan prinsip ilmiah menggunakan makhluk hidup untuk menghasilkan produk bernilai ekonomi. Pembuatan wine termasuk bioteknologi konvensional." },
+        { title: "Reaksi Fermentasi", image: "chemical.jpeg", desc: "Fermentasi terjadi saat mikroorganisme memecah glukosa tanpa oksigen.<br><br><b>C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂ + Energi</b><br><br>Proses ini sangat bergantung pada stabilitas suhu." },
+        { title: "The Master: Ragi", image: "ragi.jpeg", desc: "Ragi (Yeast) mengubah gula buah menjadi alkohol. Jenis yang paling umum digunakan adalah <i>Saccharomyces cerevisiae</i> karena ketahanannya." },
+        { title: "Alur Produksi", image: "production.jpeg", desc: "Dimulai dari pemilihan anggur terbaik, penghancuran (crushing), fermentasi di tanki besar, hingga pematangan dalam tong kayu ek." }
     ];
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -103,11 +67,9 @@
             <h1>${item.title}</h1>
             <div class="text-block"><p>${item.desc}</p></div>
         `;
-        // Tampilkan simulator hanya jika ID adalah 1 (Reaksi Kimia)
-        if (id == "1") { simulatorDiv.style.display = "block"; }
+        if (id == "1") simulatorDiv.style.display = "block";
     }
 
-    // Logika Termometer
     const slider = document.getElementById('tempSlider');
     const display = document.getElementById('tempVal');
     const status = document.getElementById('tempStatus');
@@ -117,17 +79,14 @@
         const val = this.value;
         display.innerHTML = val + "°C";
         if (val < 15) {
-            status.innerHTML = "Terlalu Dingin";
-            status.className = "status-box status-cold";
-            advice.innerHTML = "Ragi menjadi pasif (tidur). Proses fermentasi terhenti.";
+            status.innerText = "Terlalu Dingin"; status.className = "status-box status-cold";
+            advice.innerText = "Ragi menjadi pasif dan fermentasi melambat.";
         } else if (val >= 15 && val <= 30) {
-            status.innerHTML = "Suhu Optimal";
-            status.className = "status-box status-optimal";
-            advice.innerHTML = "Kondisi sempurna! Wine akan berkualitas tinggi.";
+            status.innerText = "Suhu Optimal"; status.className = "status-box status-optimal";
+            advice.innerText = "Suhu ideal! Ragi bekerja dengan sangat efektif.";
         } else {
-            status.innerHTML = "Terlalu Panas";
-            status.className = "status-box status-hot";
-            advice.innerHTML = "Ragi bisa mati! Rasa wine akan menjadi rusak/asam.";
+            status.innerText = "Terlalu Panas"; status.className = "status-box status-hot";
+            advice.innerText = "Ragi bisa mati dan merusak rasa minuman.";
         }
     });
 </script>
