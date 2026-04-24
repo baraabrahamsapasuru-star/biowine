@@ -8,51 +8,122 @@
     <style>
         :root { --primary: #722F37; --accent: #D4AF37; --bg: #0f172a; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: #e2e8f0; line-height: 1.8; margin: 0; }
-        .container { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
         .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-weight: 600; }
-        .content-header img { width: 100%; height: 350px; object-fit: cover; border-radius: 30px; margin-bottom: 30px; border: 2px solid var(--accent); }
+        
+        .content-header img { 
+            width: 100%; height: 350px; object-fit: cover; 
+            border-radius: 30px; margin-bottom: 30px; border: 2px solid var(--accent);
+        }
         h1 { color: var(--accent); font-size: 36px; margin-bottom: 20px; }
-        .text-block { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; }
+        .text-block { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; margin-bottom: 30px;}
 
-        /* CSS TERMOMETER */
-        .temp-container { background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--accent); margin-top: 40px; }
-        .thermometer-wrapper { display: flex; align-items: center; justify-content: center; gap: 50px; margin: 50px 0; height: 200px; }
-        .thermometer-input { -webkit-appearance: none; width: 200px; height: 12px; background: linear-gradient(to right, #3b82f6, #22c55e, #ef4444); border-radius: 10px; outline: none; transform: rotate(-90deg); }
-        .thermometer-input::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: white; border: 3px solid var(--primary); border-radius: 50%; cursor: pointer; }
-        .temp-display { font-size: 48px; font-weight: 700; color: var(--accent); }
-        .status-box { padding: 10px 20px; border-radius: 10px; font-weight: 600; margin-top: 10px; }
-        .status-cold { background: #1e3a8a; color: #60a5fa; }
-        .status-optimal { background: #064e3b; color: #34d399; }
-        .status-hot { background: #7f1d1d; color: #f87171; }
+        /* HIGHLIGHT RUMUS KIMIA */
+        .formula-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--accent);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+        .formula-box code {
+            font-size: 22px; font-weight: 700; color: var(--accent); letter-spacing: 2px;
+        }
+
+        /* TERMOMETER STYLES */
+        .temp-container {
+            background: #1e293b; padding: 40px; border-radius: 24px;
+            text-align: center; border: 1px solid var(--accent); margin-top: 40px;
+        }
+        .thermometer-wrapper {
+            display: flex; align-items: center; justify-content: center;
+            gap: 80px; margin: 60px 0; height: 250px; position: relative;
+        }
+        .slider-box { width: 50px; height: 200px; display: flex; align-items: center; justify-content: center; }
+        .thermometer-input {
+            -webkit-appearance: none; width: 200px; height: 15px;
+            background: linear-gradient(to right, #3b82f6, #22c55e, #ef4444);
+            border-radius: 10px; transform: rotate(-90deg); outline: none; cursor: pointer;
+        }
+        .temp-display { font-size: 56px; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+        .status-tag { padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; display: inline-block; margin-bottom: 15px; }
+
+        /* STYLE ALUR PRODUKSI (KUNING) */
+        .linear-flow-container {
+            display: flex; justify-content: space-between; align-items: stretch;
+            margin: 50px 0; padding: 25px; background: rgba(255,255,255,0.03); border-radius: 24px; gap: 10px;
+        }
+        .flow-node {
+            flex: 1; text-align: center; 
+            background: var(--accent); /* Warna Dasar Kuning */
+            color: #0f172a; /* Teks Gelap agar kontras */
+            padding: 20px 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: 0.3s;
+        }
+        .flow-node:hover { transform: translateY(-5px); filter: brightness(1.1); }
+        .flow-node h4 { margin: 0 0 10px 0; font-size: 18px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+        .flow-node p { font-size: 11px; line-height: 1.4; margin: 0; font-weight: 500; }
+        
+        .flow-line { flex: 0 0 20px; height: 2px; background: var(--accent); align-self: center; opacity: 0.5; }
+
+        @media (max-width: 900px) {
+            .linear-flow-container { flex-direction: column; }
+            .flow-line { width: 2px; height: 20px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="index.html" class="back-link">← Kembali</a>
+    <a href="index.html" class="back-link">← Kembali ke Dashboard</a>
     <div id="content"><h1>Memuat...</h1></div>
     
     <div id="simulator" style="display: none;">
         <div class="temp-container">
-            <h3>Simulasi Suhu Fermentasi</h3>
+            <span id="tempTag" class="status-tag" style="background: #064e3b; color: #34d399;">Suhu Optimal</span>
             <div class="thermometer-wrapper">
-                <input type="range" min="5" max="50" value="25" class="thermometer-input" id="tempSlider">
+                <div class="slider-box">
+                    <input type="range" min="5" max="50" value="25" class="thermometer-input" id="tempSlider">
+                </div>
                 <div>
                     <div id="tempVal" class="temp-display">25°C</div>
-                    <div id="tempStatus" class="status-box status-optimal">Suhu Optimal</div>
+                    <p id="tempAdvice" style="max-width: 300px; color: #94a3b8;">Kondisi sempurna untuk ragi bekerja!</p>
                 </div>
             </div>
-            <p id="tempAdvice">Suhu ideal untuk ragi Saccharomyces cerevisiae bekerja.</p>
         </div>
     </div>
+
+    <footer style="text-align: center; padding: 60px; color: #64748b;">&copy; 2026 BioWine Education</footer>
 </div>
 
 <script>
     const dataMateri = [
-        { title: "Dasar Bioteknologi", image: "definisi.jpeg", desc: "Bioteknologi adalah pemanfaatan prinsip ilmiah menggunakan makhluk hidup untuk menghasilkan produk bernilai ekonomi. Pembuatan wine termasuk bioteknologi konvensional." },
-        { title: "Reaksi Fermentasi", image: "chemical.jpeg", desc: "Fermentasi terjadi saat mikroorganisme memecah glukosa tanpa oksigen.<br><br><b>C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂ + Energi</b><br><br>Proses ini sangat bergantung pada stabilitas suhu." },
-        { title: "The Master: Ragi", image: "ragi.jpeg", desc: "Ragi (Yeast) mengubah gula buah menjadi alkohol. Jenis yang paling umum digunakan adalah <i>Saccharomyces cerevisiae</i> karena ketahanannya." },
-        { title: "Alur Produksi", image: "production.jpeg", desc: "Dimulai dari pemilihan anggur terbaik, penghancuran (crushing), fermentasi di tanki besar, hingga pematangan dalam tong kayu ek." }
+        {
+            title: "Dasar Bioteknologi",
+            image: "definisi.jpeg",
+            desc: "Bioteknologi adalah pemanfaatan organisme hidup untuk menghasilkan produk yang berguna bagi manusia. Wine merupakan hasil dari <b>Bioteknologi Konvensional</b>, di mana ragi alami bekerja secara tradisional tanpa modifikasi genetik yang ekstrem."
+        },
+        {
+            title: "Reaksi Kimia Fermentasi",
+            image: "chemical.jpeg",
+            desc: "Dalam proses pembuatan wine, ragi melakukan metabolisme anaerob. Ini adalah inti dari transformasi sari anggur menjadi minuman beralkohol.",
+            showFormula: true
+        },
+        {
+            title: "The Master: Ragi",
+            image: "ragi.jpeg",
+            desc: "Saccharomyces cerevisiae adalah pahlawan mikroskopis kita. Ragi ini memakan gula buah dan mengeluarkan alkohol sebagai hasil sampingan proses energinya."
+        },
+        {
+            title: "Alur Produksi Modern",
+            image: "production.jpeg",
+            desc: "Transformasi dari kebun ke botol melibatkan tahapan bioteknologi yang harus dijaga ketat agar kualitas wine tetap terjaga:",
+            showFlow: true
+        }
     ];
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -62,33 +133,73 @@
 
     if (id !== null && dataMateri[id]) {
         const item = dataMateri[id];
+        
         contentDiv.innerHTML = `
             <div class="content-header"><img src="${item.image}"></div>
             <h1>${item.title}</h1>
             <div class="text-block"><p>${item.desc}</p></div>
         `;
-        if (id == "1") simulatorDiv.style.display = "block";
+
+        if (item.showFormula) {
+            contentDiv.innerHTML += `
+                <div class="formula-box">
+                    <p style="margin-bottom: 10px; color: #cbd5e1; font-size: 14px;">Persamaan Reaksi Fermentasi Alkohol:</p>
+                    <code>C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂ + Energi</code>
+                </div>
+            `;
+            simulatorDiv.style.display = "block";
+        }
+
+        if (item.showFlow) {
+            contentDiv.innerHTML += `
+                <div class="linear-flow-container">
+                    <div class="flow-node">
+                        <h4>Harvest</h4>
+                        <p>Anggur dipetik saat tingkat kematangan optimal (kadar gula dan asam seimbang).</p>
+                    </div>
+                    <div class="flow-line"></div>
+                    <div class="flow-node">
+                        <h4>Crush</h4>
+                        <p>Anggur dihancurkan untuk mengeluarkan jusnya. Kulit anggur memberikan warna khas pada wine merah.</p>
+                    </div>
+                    <div class="flow-line"></div>
+                    <div class="flow-node">
+                        <h4>Ferment</h4>
+                        <p>Ragi mengubah gula menjadi alkohol dan CO₂. Suhu dikontrol ketat untuk aroma terbaik.</p>
+                    </div>
+                    <div class="flow-line"></div>
+                    <div class="flow-node">
+                        <h4>Aging</h4>
+                        <p>Wine disimpan dalam tangki atau tong kayu untuk menghaluskan rasa sebelum siap dikonsumsi.</p>
+                    </div>
+                </div>
+            `;
+        }
     }
 
     const slider = document.getElementById('tempSlider');
-    const display = document.getElementById('tempVal');
-    const status = document.getElementById('tempStatus');
+    const tag = document.getElementById('tempTag');
     const advice = document.getElementById('tempAdvice');
-
+    
     slider?.addEventListener('input', function() {
         const val = this.value;
-        display.innerHTML = val + "°C";
-        if (val < 15) {
-            status.innerText = "Terlalu Dingin"; status.className = "status-box status-cold";
-            advice.innerText = "Ragi menjadi pasif dan fermentasi melambat.";
-        } else if (val >= 15 && val <= 30) {
-            status.innerText = "Suhu Optimal"; status.className = "status-box status-optimal";
-            advice.innerText = "Suhu ideal! Ragi bekerja dengan sangat efektif.";
+        document.getElementById('tempVal').innerHTML = val + "°C";
+        
+        if(val < 15) {
+            tag.innerHTML = "Terlalu Dingin";
+            tag.style.background = "#1e3a8a"; tag.style.color = "#60a5fa";
+            advice.innerHTML = "Ragi menjadi tidak aktif. Fermentasi melambat atau terhenti.";
+        } else if(val <= 30) {
+            tag.innerHTML = "Suhu Optimal";
+            tag.style.background = "#064e3b"; tag.style.color = "#34d399";
+            advice.innerHTML = "Kondisi sempurna! Ragi mengubah gula menjadi alkohol secara stabil.";
         } else {
-            status.innerText = "Terlalu Panas"; status.className = "status-box status-hot";
-            advice.innerText = "Ragi bisa mati dan merusak rasa minuman.";
+            tag.innerHTML = "Terlalu Panas";
+            tag.style.background = "#7f1d1d"; tag.style.color = "#f87171";
+            advice.innerHTML = "Bahaya! Ragi bisa mati dan rasa wine akan rusak (menjadi asam).";
         }
     });
 </script>
+
 </body>
 </html>
